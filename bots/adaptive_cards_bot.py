@@ -8,7 +8,7 @@ import traceback
 import urllib.error, urllib.request, urllib.parse
 import json
 import uuid
-
+import config
 from botbuilder.core import ActivityHandler, TurnContext, CardFactory, ConversationState, UserState
 from botbuilder.schema import ChannelAccount, Attachment, Activity, ActivityTypes
 
@@ -170,8 +170,8 @@ class AdaptiveCardsBot(ActivityHandler):
             elif (turn_context.activity.value.get('id') == '2'):
                 bankCode = str(turn_context.activity.value['bankID'])
 
-                bankCode , bankName = bankCode.split(',')
-                print("Got Bank ID  as " + bankCode)
+                bank_id , bankName = bankCode.split(',')
+                print("Got Bank ID  as " + bank_id)
 
                 #---------------------------------------------------------------------------------------------------------------
                 #                                        STEP 3 - CREATE AGREEMENT
@@ -229,7 +229,7 @@ class AdaptiveCardsBot(ActivityHandler):
                 response_dict = json.loads(response.text)
                 nord_login_link = response_dict['initiate']
 
-                print (f" Next URL needs bankCode {bankCode} bankTitle {bankName} "
+                print (f" Next URL needs bankCode {bank_id} bankTitle {bankName} "
                        f" UserID  countryCode {user_profile.country}")
 
                 print (f""" You have selected  Bank {bankName} \n
