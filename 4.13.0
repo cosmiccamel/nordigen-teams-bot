@@ -1,0 +1,83 @@
+Collecting botbuilder-dialogs
+  Using cached botbuilder_dialogs-4.13.0-py3-none-any.whl (100 kB)
+Collecting recognizers-text-number>=1.0.2a1
+  Using cached recognizers_text_number-1.0.2a2-py3-none-any.whl (60 kB)
+Collecting aiounittest==1.3.0
+  Using cached aiounittest-1.3.0.tar.gz (5.4 kB)
+Collecting botframework-connector==4.13.0
+  Using cached botframework_connector-4.13.0-py2.py3-none-any.whl (67 kB)
+Collecting recognizers-text>=1.0.2a1
+  Using cached recognizers_text-1.0.2a2-py3-none-any.whl (14 kB)
+Collecting botbuilder-core==4.13.0
+  Using cached botbuilder_core-4.13.0-py3-none-any.whl (97 kB)
+Collecting recognizers-text-number-with-unit>=1.0.2a1
+  Using cached recognizers_text_number_with_unit-1.0.2a2-py3-none-any.whl (75 kB)
+Collecting recognizers-text-choice>=1.0.2a1
+  Using cached recognizers_text_choice-1.0.2a2-py3-none-any.whl (8.0 kB)
+Collecting botbuilder-schema==4.13.0
+  Using cached botbuilder_schema-4.13.0-py2.py3-none-any.whl (34 kB)
+Collecting regex<=2019.08.19
+  Using cached regex-2019.08.19-cp37-none-win_amd64.whl (325 kB)
+Collecting recognizers-text-date-time>=1.0.2a1
+  Using cached recognizers_text_date_time-1.0.2a2-py3-none-any.whl (248 kB)
+Collecting babel==2.7.0
+  Using cached Babel-2.7.0-py2.py3-none-any.whl (8.4 MB)
+Requirement already satisfied: pytz>=2015.7 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from babel==2.7.0->botbuilder-dialogs) (2019.1)
+Requirement already satisfied: jsonpickle<1.5,>=1.2 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from botbuilder-core==4.13.0->botbuilder-dialogs) (1.2)
+Collecting msrest==0.6.10
+  Using cached msrest-0.6.10-py2.py3-none-any.whl (82 kB)
+Requirement already satisfied: requests<2.26,>=2.23.0 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from botframework-connector==4.13.0->botbuilder-dialogs) (2.23.0)
+Collecting msal==1.6.0
+  Using cached msal-1.6.0-py2.py3-none-any.whl (50 kB)
+Requirement already satisfied: PyJWT<2.0.0,>=1.5.3 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from botframework-connector==4.13.0->botbuilder-dialogs) (1.5.3)
+Requirement already satisfied: cryptography<4,>=0.6 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from msal==1.6.0->botframework-connector==4.13.0->botbuilder-dialogs) (2.8)
+Requirement already satisfied: requests-oauthlib>=0.5.0 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from msrest==0.6.10->botbuilder-schema==4.13.0->botbuilder-dialogs) (1.3.0)
+Requirement already satisfied: isodate>=0.6.0 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from msrest==0.6.10->botbuilder-schema==4.13.0->botbuilder-dialogs) (0.6.0)
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from msrest==0.6.10->botbuilder-schema==4.13.0->botbuilder-dialogs) (2020.4.5.1)
+Requirement already satisfied: six>=1.4.1 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from cryptography<4,>=0.6->msal==1.6.0->botframework-connector==4.13.0->botbuilder-dialogs) (1.15.0)
+Requirement already satisfied: cffi!=1.11.3,>=1.8 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from cryptography<4,>=0.6->msal==1.6.0->botframework-connector==4.13.0->botbuilder-dialogs) (1.14.5)
+Requirement already satisfied: pycparser in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from cffi!=1.11.3,>=1.8->cryptography<4,>=0.6->msal==1.6.0->botframework-connector==4.13.0->botbuilder-dialogs) (2.20)
+Collecting multipledispatch
+  Using cached multipledispatch-0.6.0-py3-none-any.whl (11 kB)
+Collecting emoji
+  Using cached emoji-1.2.0-py3-none-any.whl (131 kB)
+Collecting grapheme
+  Using cached grapheme-0.6.0.tar.gz (207 kB)
+Collecting datedelta
+  Using cached datedelta-1.3-py3-none-any.whl (6.7 kB)
+Requirement already satisfied: idna<3,>=2.5 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from requests<2.26,>=2.23.0->botframework-connector==4.13.0->botbuilder-dialogs) (2.9)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from requests<2.26,>=2.23.0->botframework-connector==4.13.0->botbuilder-dialogs) (1.25.9)
+Requirement already satisfied: chardet<4,>=3.0.2 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from requests<2.26,>=2.23.0->botframework-connector==4.13.0->botbuilder-dialogs) (3.0.4)
+Requirement already satisfied: oauthlib>=3.0.0 in c:\users\v-jucefe\appdata\local\programs\python\python37\lib\site-packages (from requests-oauthlib>=0.5.0->msrest==0.6.10->botbuilder-schema==4.13.0->botbuilder-dialogs) (3.1.0)
+Building wheels for collected packages: aiounittest, grapheme
+  Building wheel for aiounittest (setup.py): started
+  Building wheel for aiounittest (setup.py): finished with status 'done'
+  Created wheel for aiounittest: filename=aiounittest-1.3.0-py3-none-any.whl size=6730 sha256=56e481d0cbffd88839048494a62fb5611c39ef838e9034c4bf78fe1f73462956
+  Stored in directory: c:\users\v-jucefe\appdata\local\pip\cache\wheels\e4\9b\8d\24349da37fb734d5ad96f9c7749c6b801e4eb0db7c0acaee78
+  Building wheel for grapheme (setup.py): started
+  Building wheel for grapheme (setup.py): finished with status 'done'
+  Created wheel for grapheme: filename=grapheme-0.6.0-py3-none-any.whl size=210100 sha256=3e220f9453021e781504535dd2e7e998338cbe6d29a16d204cbb5a962d8b67ce
+  Stored in directory: c:\users\v-jucefe\appdata\local\pip\cache\wheels\71\fc\c8\142ef03b79c02b618fe80b9f2d01c25bd55f60b0c58eab3f0e
+Successfully built aiounittest grapheme
+Installing collected packages: multipledispatch, emoji, regex, recognizers-text, msrest, recognizers-text-number, msal, botbuilder-schema, recognizers-text-number-with-unit, grapheme, datedelta, botframework-connector, recognizers-text-date-time, recognizers-text-choice, botbuilder-core, babel, aiounittest, botbuilder-dialogs
+  Attempting uninstall: msrest
+    Found existing installation: msrest 0.6.19
+    Uninstalling msrest-0.6.19:
+      Successfully uninstalled msrest-0.6.19
+  Attempting uninstall: msal
+    Found existing installation: msal 1.0.0
+    Uninstalling msal-1.0.0:
+      Successfully uninstalled msal-1.0.0
+  Attempting uninstall: botbuilder-schema
+    Found existing installation: botbuilder-schema 4.8.0
+    Uninstalling botbuilder-schema-4.8.0:
+      Successfully uninstalled botbuilder-schema-4.8.0
+  Attempting uninstall: botframework-connector
+    Found existing installation: botframework-connector 4.8.0
+    Uninstalling botframework-connector-4.8.0:
+      Successfully uninstalled botframework-connector-4.8.0
+  Attempting uninstall: botbuilder-core
+    Found existing installation: botbuilder-core 4.8.0
+    Uninstalling botbuilder-core-4.8.0:
+      Successfully uninstalled botbuilder-core-4.8.0
+Successfully installed aiounittest-1.3.0 babel-2.7.0 botbuilder-core-4.13.0 botbuilder-dialogs-4.13.0 botbuilder-schema-4.13.0 botframework-connector-4.13.0 datedelta-1.3 emoji-1.2.0 grapheme-0.6.0 msal-1.6.0 msrest-0.6.10 multipledispatch-0.6.0 recognizers-text-1.0.2a2 recognizers-text-choice-1.0.2a2 recognizers-text-date-time-1.0.2a2 recognizers-text-number-1.0.2a2 recognizers-text-number-with-unit-1.0.2a2 regex-2019.8.19
