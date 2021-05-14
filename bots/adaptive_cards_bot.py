@@ -207,7 +207,7 @@ class AdaptiveCardsBot(ActivityHandler):
             card_path = os.path.join(os.getcwd(), CARDS[0])
             with open(card_path, "rb") as in_file:
                 card_data = json.load(in_file)
-            card_data = json.load(bank_country_card)
+            #card_data = json.load(bank_country_card)
             #ard_data = bank_country_card
         else:
             card_data = bankCard
