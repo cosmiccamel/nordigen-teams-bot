@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'teams-bank-bot'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_23ccc693719e4e26b0a1d17e03c682e0 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_fb016a13f404473bb3bd54811526bf79 }}
