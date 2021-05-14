@@ -203,9 +203,108 @@ class AdaptiveCardsBot(ActivityHandler):
         :return:
         """
         if bankCard is None:
-            card_path = os.path.join(os.getcwd(), CARDS[0])
-            with open(card_path, "rb") as in_file:
-                card_data = json.load(in_file)
+            # card_path = os.path.join(os.getcwd(), CARDS[0])
+            # with open(card_path, "rb") as in_file:
+            #     card_data = json.load(in_file)
+            card_data = json.load(bank_country_card)
         else:
             card_data = bankCard
         return CardFactory.adaptive_card(card_data)
+
+
+
+bank_country_card = """"
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+
+        {
+            "type": "TextBlock",
+            "text": "Select Country",
+            "wrap": true
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "id": "CompactSelectVal",
+            "value": "be",
+            "choices": [
+                {
+                    "title": "Belgium",
+                    "value": "be"
+                },
+                {
+                    "title": "Czech Republic",
+                    "value": "cz"
+                },
+                {
+                    "title": "Denmark",
+                    "value": "dk"
+                },
+				        {
+                    "title": "Estonia",
+                    "value": "ee"
+                },
+				        {
+                    "title": "Finland",
+                    "value": "fi"
+                },
+				        {
+                    "title": "France",
+                    "value": "fr"
+                },
+				        {
+                    "title": "Germany",
+                    "value": "de"
+                },
+				        {
+                    "title": "Ireland",
+                    "value": "ie"
+                },
+				        {
+                    "title": "Latvia",
+                    "value": "lv"
+                },
+				        {
+                    "title": "Lithuania",
+                    "value": "lt"
+                },
+				        {
+                    "title": "Netherlands",
+                    "value": "nl"
+                },
+				        {
+                    "title": "Norway",
+                    "value": "no"
+                },
+				        {
+                    "title": "Portugal",
+                    "value": "pt"
+                },
+				        {
+                    "title": "Spain",
+                    "value": "es"
+                },
+				        {
+                    "title": "Sweden",
+                    "value": "se"
+                },
+				        {
+                    "title": "United Kingdom",
+                    "value": "gb"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit",
+            "data": {
+                "id": "1"
+            }
+        }
+    ]
+}
+"""
