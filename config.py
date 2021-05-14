@@ -13,3 +13,6 @@ class DefaultConfig:
     PORT = 3978
     APP_ID = os.environ.get("MicrosoftAppId", "8cf6656d-0338-4a5a-9ae0-b73d6c881a4f")
     APP_PASSWORD = os.environ.get("MicrosoftAppPassword", "9GjNks4YvJ_JtQL-__aRiqe2vP03696Q_z")
+
+ADMIN_FUNC_TOKEN = 'w7LXvmkwLHgSZ/UgRxNrULA3rzPW8qvrFOqAwcnh1piUvD5bAJENKQ=='
+

@@ -3,11 +3,11 @@
 
 import json
 import os
-import random
 # from  bank_details import getBanks
 import traceback
 import urllib.error, urllib.request, urllib.parse
 import json
+import uuid
 
 from botbuilder.core import ActivityHandler, TurnContext, CardFactory, ConversationState, UserState
 from botbuilder.schema import ChannelAccount, Attachment, Activity, ActivityTypes
@@ -173,20 +173,92 @@ class AdaptiveCardsBot(ActivityHandler):
                 bankCode , bankName = bankCode.split(',')
                 print("Got Bank ID  as " + bankCode)
 
-                # URL to show user
-                # url =
+                #---------------------------------------------------------------------------------------------------------------
+                #                                        STEP 3 - CREATE AGREEMENT
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------CREATE AGREEMENT ENDPOINT-----------------------------------')
+                #---------------------------------------------------------------------------------------------------------------
+                temp_user_id = str(uuid.uuid4())
+                request_url = 'https://bank-country.azurewebsites.net/api/create-user-agreement?code='+ config.ADMIN_FUNC_TOKEN
+                #payload = '&user-agreement=max_historical_days:90,enduser_id:'+str(turn_context.activity.from_property.name)+',aspsp_id:'+bankCode
+                payload = '&user-agreement=max_historical_days:90,enduser_id:'+temp_user_id+',aspsp_id:'+bank_id
+                create_agreement_url = request_url + payload
 
+                #---------------------------------------------------------------------------------------------------------------
+                #                                        STEP 3 - AGREEMENT REQUEST / RESPONSE
+                #---------------------------------------------------------------------------------------------------------------
+
+                response = requests.get(create_agreement_url)
+                response_dict = json.loads(response.text)
+                agreement_id = response_dict['id']
+
+                #---------------------------------------------------------------------------------------------------------------
+                #                                                   STEP 4 -  CREATE LINK ID 
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------CREATE LINK ID ENDPOINT-----------------------------------')
+                #---------------------------------------------------------------------------------------------------------------
+                temp_order_id = str(uuid.uuid4())
+                request_url = 'https://bank-country.azurewebsites.net/api/build-link?code='+ config.ADMIN_FUNC_TOKEN
+                #payload = '&create-link=redirect:https://everst-add-bank.azurewebsites.net/profile,reference:'+ str(id_order) +',enduser_id:' + str(session.get("ms_id"))+ ',agreements:' + agreement_id
+                payload = '&create-link=redirect:https://everst-add-bank.azurewebsites.net/profile,reference:'+ temp_order_id +',enduser_id:' + temp_user_id+ ',agreements:' + agreement_id
+                create_link_url = request_url + payload
+
+                #---------------------------------------------------------------------------------------------------------------
+                #                                        STEP 4- LINK ID REQUEST / RESPONSE
+                #---------------------------------------------------------------------------------------------------------------
                 # Create Message activity for google
+                response = requests.get(create_link_url)
+                response_dict = json.loads(response.text)
+                link_id = response_dict['id']
+    
+                #---------------------------------------------------------------------------------------------------------------
+                #                                                   STEP 5 -  CREATE BANK URL 
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------CREATE BANK URL ENDPOINT-----------------------------------')
+                #---------------------------------------------------------------------------------------------------------------
+
+                request_url = 'https://bank-country.azurewebsites.net/api/login-bank-link?code='+ config.ADMIN_FUNC_TOKEN
+                payload = '&login-link=link_id:'+link_id+',aspsp_id:'+bank_id
+                nordigen_link = request_url + payload
+
+                #---------------------------------------------------------------------------------------------------------------
+                #                                                   STEP 5 -  BANK URL REQUEST / RESPONSE
+                #---------------------------------------------------------------------------------------------------------------
+
+                response = requests.get(nordigen_link)
+                response_dict = json.loads(response.text)
+                nord_login_link = response_dict['initiate']
 
                 print (f" Next URL needs bankCode {bankCode} bankTitle {bankName} "
                        f" UserID  countryCode {user_profile.country}")
 
-                updateMsg = f""" You have selected  Bank {bankName} with code =  {bankCode}
-                            Country code = {user_profile.country} and user ID = {items.get('id')}
-                            got user Name as {turn_context.activity.from_property.name} and {turn_context.activity.from_property.id}
-                            Please click on the URL information at: https://www.google.com"""
+                print (f""" You have selected  Bank {bankName} \n
+                            with code {bank_id} \n
+                            Country code {user_profile.country} \n
+                            got user Name as {turn_context.activity.from_property.name} \n
+                            and {turn_context.activity.from_property.id} \n
+                            Please click on the URL information at: https://www.google.com \n
+                            The payload url is {create_agreement_url} \n
+                            create agreement url is {create_link_url} \n
+                            create nordigen link {nordigen_link} """ )
 
-                return  await turn_context.send_activity(updateMsg)
+                return  await turn_context.send_activity(nord_login_link)
+
+
+                # # URL to show user
+                # # url =
+
+                # # Create Message activity for google
+
+                # print (f" Next URL needs bankCode {bankCode} bankTitle {bankName} "
+                #        f" UserID  countryCode {user_profile.country}")
+
+                # updateMsg = f""" You have selected  Bank {bankName} with code =  {bankCode}
+                #             Country code = {user_profile.country} 
+                #             got user Name as {turn_context.activity.from_property.name} and USER ID = {turn_context.activity.from_property.id}
+                #             Please click on the URL information at: https://www.google.com"""
+
+                # return  await turn_context.send_activity(updateMsg)
 
         else:
             message = Activity(
