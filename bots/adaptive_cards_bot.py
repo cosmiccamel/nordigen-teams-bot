@@ -14,6 +14,7 @@ from botbuilder.core import ActivityHandler, TurnContext, CardFactory, Conversat
 from botbuilder.schema import ChannelAccount, Attachment, Activity, ActivityTypes
 
 from data_model import UserProfile
+from services import create_db_conn , query_insert_order , insert_to_orders_table , query_insert_transaction_tracking, insert_to_transaction_tracking_table , insert_new_user , query_insert_user
 
 # url = "https://bank-country.azurewebsites.net/api/" \
 #       "country?code=w7LXvmkwLHgSZ/UgRxNrULA3rzPW8qvrFOqAwcnh1piUvD5bAJENKQ==&bank-country="
@@ -177,16 +178,31 @@ class AdaptiveCardsBot(ActivityHandler):
                 bank_id , bankName = bankCode.split(',')
                 print("Got Bank ID  as " + bank_id)
 
+                temp_user_id = str(uuid.uuid4())
+
+                #---------------------------------------------------------------------------------------------------------------
+                #                                      CREATE A RECORD IN ORDER DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT RECORD TO ORDER DB-----------------------------------')
+                id_order = insert_to_orders_table (create_db_conn() , query_insert_order(temp_user_id, user_profile.country, bank_id) )
+
                 #---------------------------------------------------------------------------------------------------------------
                 #                                        STEP 3 - CREATE AGREEMENT
                 #---------------------------------------------------------------------------------------------------------------
                 print('---------------------------------CREATE AGREEMENT ENDPOINT-----------------------------------')
                 #---------------------------------------------------------------------------------------------------------------
-                temp_user_id = str(uuid.uuid4())
+                
                 request_url = 'https://bank-country.azurewebsites.net/api/create-user-agreement?code='+ config.ADMIN_FUNC_TOKEN
                 #payload = '&user-agreement=max_historical_days:90,enduser_id:'+str(turn_context.activity.from_property.name)+',aspsp_id:'+bankCode
                 payload = '&user-agreement=max_historical_days:90,enduser_id:'+temp_user_id+',aspsp_id:'+bank_id
                 create_agreement_url = request_url + payload
+
+                #---------------------------------------------------------------------------------------------------------------
+                #                                         STEP 3 - STORE AGREEMENT REQUEST 
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Request.CreateAgreement-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Request.CreateAgreement' , create_agreement_url , id_order ) )
+                #---------------------------------------------------------------------------------------------------------------
 
                 #---------------------------------------------------------------------------------------------------------------
                 #                                        STEP 3 - AGREEMENT REQUEST / RESPONSE
@@ -195,7 +211,12 @@ class AdaptiveCardsBot(ActivityHandler):
                 response = requests.get(create_agreement_url)
                 response_dict = json.loads(response.text)
                 agreement_id = response_dict['id']
-
+                #---------------------------------------------------------------------------------------------------------------
+                #                                      STEP 3 - CREATE A RESPONSE RECORD IN TRANSACTION TRAKING DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Response.CreateAgreement-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Response.CreateAgreement' , response.text , id_order ) )
+                
                 #---------------------------------------------------------------------------------------------------------------
                 #                                                   STEP 4 -  CREATE LINK ID 
                 #---------------------------------------------------------------------------------------------------------------
@@ -208,6 +229,13 @@ class AdaptiveCardsBot(ActivityHandler):
                 create_link_url = request_url + payload
 
                 #---------------------------------------------------------------------------------------------------------------
+                #                                   STEP 4 -   CREATE A REQUEST RECORD IN TRANSACTION TRACKING DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Request.CreateAgreement-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Request.CreateLinkId' , create_link_url , id_order ) )
+                #---------------------------------------------------------------------------------------------------------------
+
+                #---------------------------------------------------------------------------------------------------------------
                 #                                        STEP 4- LINK ID REQUEST / RESPONSE
                 #---------------------------------------------------------------------------------------------------------------
                 # Create Message activity for google
@@ -215,6 +243,12 @@ class AdaptiveCardsBot(ActivityHandler):
                 response_dict = json.loads(response.text)
                 link_id = response_dict['id']
     
+                #---------------------------------------------------------------------------------------------------------------
+                #                                     STEP 4 - CREATE A RESPONSE RECORD IN TRANSACTION TRAKING DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Response.CreateLinkId-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Response.CreateLinkId' , response.text , id_order ) )
+
                 #---------------------------------------------------------------------------------------------------------------
                 #                                                   STEP 5 -  CREATE BANK URL 
                 #---------------------------------------------------------------------------------------------------------------
@@ -226,12 +260,24 @@ class AdaptiveCardsBot(ActivityHandler):
                 nordigen_link = request_url + payload
 
                 #---------------------------------------------------------------------------------------------------------------
+                #                                      CREATE A REQUEST RECORD IN TRANSACTION TRACKING DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Request.CreateAgreement-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Request.BankLink' , nordigen_link , id_order ) )
+                #---------------------------------------------------------------------------------------------------------------
+                #---------------------------------------------------------------------------------------------------------------
                 #                                                   STEP 5 -  BANK URL REQUEST / RESPONSE
                 #---------------------------------------------------------------------------------------------------------------
 
                 response = requests.get(nordigen_link)
                 response_dict = json.loads(response.text)
                 nord_login_link = response_dict['initiate']
+                #---------------------------------------------------------------------------------------------------------------
+                #                                      CREATE A RESPONSE RECORD IN TRANSACTION TRAKING DB
+                #---------------------------------------------------------------------------------------------------------------
+                print('---------------------------------INSERT  Nordigen.Response.BankLink-----------------------------------')
+                insert_to_transaction_tracking_table (create_db_conn() , query_insert_transaction_tracking(temp_user_id, 'Nordigen.Response.BankLink' , response.text , id_order ) )
+                #---------------------------------------------------------------------------------------------------------------
 
                 print (f" Next URL needs bankCode {bank_id} bankTitle {bankName} "
                        f" UserID  countryCode {user_profile.country}")
