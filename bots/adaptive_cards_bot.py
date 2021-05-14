@@ -6,6 +6,7 @@ import os
 # from  bank_details import getBanks
 import traceback
 import urllib.error, urllib.request, urllib.parse
+import requests
 import json
 import uuid
 import config
@@ -14,8 +15,8 @@ from botbuilder.schema import ChannelAccount, Attachment, Activity, ActivityType
 
 from data_model import UserProfile
 
-url = "https://bank-country.azurewebsites.net/api/" \
-      "country?code=w7LXvmkwLHgSZ/UgRxNrULA3rzPW8qvrFOqAwcnh1piUvD5bAJENKQ==&bank-country="
+# url = "https://bank-country.azurewebsites.net/api/" \
+#       "country?code=w7LXvmkwLHgSZ/UgRxNrULA3rzPW8qvrFOqAwcnh1piUvD5bAJENKQ==&bank-country="
 
 bankCardJson = """{
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -57,17 +58,20 @@ bankCardJson = """{
 """
 
 
-def getBanks(cc):
+def getBanks(country_id):
 
-    findUrl=f"{url}{cc}"
-    data = urllib.request.urlopen(findUrl).read()
+    request_url = 'https://bank-country.azurewebsites.net/api/country?code='+ config.ADMIN_FUNC_TOKEN+'&bank-country='+country_id
+    response = requests.get(request_url)
+    country = response.json()
+    # findUrl=f"{url}{cc}"
+    # data = urllib.request.urlopen(findUrl).read()
     # upData =
 
     # Remove other data
-    js = json.loads(data)
+    #js = json.loads(data)
 
     new_dictArry = []
-    for items in js:
+    for items in country:
         # new_dictArry.append({key:val for key, val in items.items() if key not in ('bic' , 'countries' , 'countries') })
 
         new_dictArry.append({'value' : f"{items.get('id')},{items.get('name')}" ,
