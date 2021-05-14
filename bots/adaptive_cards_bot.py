@@ -181,8 +181,8 @@ class AdaptiveCardsBot(ActivityHandler):
                 print (f" Next URL needs bankCode {bankCode} bankTitle {bankName} "
                        f" UserID  countryCode {user_profile.country}")
 
-                updateMsg = f""" You have selected  Bank {bankName} with code {bankCode}
-                            Country code {user_profile.country}
+                updateMsg = f""" You have selected  Bank {bankName} with code =  {bankCode}
+                            Country code = {user_profile.country} and user ID = {items.get('id')}
                             got user Name as {turn_context.activity.from_property.name} and {turn_context.activity.from_property.id}
                             Please click on the URL information at: https://www.google.com"""
 
